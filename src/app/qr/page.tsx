@@ -10,7 +10,7 @@ const TEMPLATES = [
   { id: "green",   label: "أخضر طبيعي",   desc: "للمطاعم الصحية والعضوية",      fg: "#16a34a", bg: "#f0fdf4" },
 ];
 
-const S: Record<string, React.CSSProperties> = {
+const S: Record<string, any> = {
   page: { minHeight: "100vh", background: "#09090f", color: "#f1f5f9", fontFamily: "'Cairo','Tajawal',sans-serif" },
   nav: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 5%", background: "rgba(9,9,15,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.06)", position: "sticky" as const, top: 0, zIndex: 100 },
   logoBox: { width: 30, height: 30, borderRadius: 8, background: "#f97316", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 },
