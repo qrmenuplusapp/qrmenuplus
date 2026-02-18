@@ -62,19 +62,26 @@ export default function Admin() {
   const [detailClient, setDetailClient] = useState<Client | null>(null);
   const [toast, setToast] = useState({ show: false, msg: "" });
   const [newName, setNewName] = useState(""); const [newSub, setNewSub] = useState(""); const [newEmail, setNewEmail] = useState(""); const [newPhone, setNewPhone] = useState(""); const [newPlan, setNewPlan] = useState("trial");
+  const [newUsername, setNewUsername] = useState(""); const [newPassword, setNewPassword] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
   const showToast = (msg: string) => { setToast({ show: true, msg }); setTimeout(() => setToast({ show: false, msg: "" }), 2600); };
 
   const addClient = () => {
     if (!newName.trim() || !newSub.trim()) { showToast("⚠️ أدخل الاسم والـ Subdomain"); return; }
+    if (!newUsername.trim() || !newPassword.trim()) { showToast("⚠️ أدخل اسم المستخدم وكلمة المرور"); return; }
     const planMap: Record<string, string> = { trial: "تجريبي", monthly: "شهري", semi: "نصف سنوي", annual: "سنوي" };
     const emojis = ["🏪", "☕", "🍽", "🥗", "🍖", "🍕", "🍔"];
     const colors = ["rgba(249,115,22,0.13)", "rgba(59,130,246,0.13)", "rgba(34,197,94,0.13)", "rgba(168,85,247,0.13)"];
     const nc: Client = { id: Date.now().toString(), name: newName, subdomain: newSub, plan: planMap[newPlan], status: newPlan === "trial" ? "trial" : "active", created: new Date().toLocaleDateString("ar-SA"), expires: "—", emoji: emojis[Math.floor(Math.random() * emojis.length)], color: colors[Math.floor(Math.random() * colors.length)] };
     setClients(c => [nc, ...c]);
-    setModal(false); setNewName(""); setNewSub(""); setNewEmail(""); setNewPhone("");
-    showToast(`✅ تم إضافة "${newName}" بنجاح!`);
+    
+    // TODO: حفظ في قاعدة البيانات
+    // سنضيف هذا لاحقاً
+    console.log("بيانات الدخول:", { username: newUsername, password: newPassword, subdomain: newSub });
+    
+    setModal(false); setNewName(""); setNewSub(""); setNewEmail(""); setNewPhone(""); setNewUsername(""); setNewPassword("");
+    showToast(`✅ تم إضافة "${newName}" - اسم المستخدم: ${newUsername}`);
   };
   const deleteClient = (id: string) => { setClients(c => c.filter(cl => cl.id !== id)); showToast("🗑 تم حذف العميل"); };
 
@@ -403,6 +410,8 @@ export default function Admin() {
               </div>
               <div style={S.formGroup}><label style={S.formLabel}>البريد الإلكتروني</label><input style={{ ...S.formInput, direction: "ltr" }} type="email" placeholder="owner@restaurant.com" value={newEmail} onChange={e => setNewEmail(e.target.value)} /></div>
               <div style={S.formGroup}><label style={S.formLabel}>رقم الهاتف</label><input style={S.formInput} placeholder="+966 5X XXX XXXX" value={newPhone} onChange={e => setNewPhone(e.target.value)} /></div>
+              <div style={S.formGroup}><label style={S.formLabel}>اسم المستخدم (للدخول)</label><input style={{ ...S.formInput, direction: "ltr" }} placeholder="alfanar" value={newUsername} onChange={e => setNewUsername(e.target.value)} /></div>
+              <div style={S.formGroup}><label style={S.formLabel}>كلمة المرور</label><input style={S.formInput} type="password" placeholder="كلمة مرور قوية" value={newPassword} onChange={e => setNewPassword(e.target.value)} /></div>
               <div style={S.formGroup}>
                 <label style={S.formLabel}>نوع الاشتراك</label>
                 <select style={S.formInput} value={newPlan} onChange={e => setNewPlan(e.target.value)}>
