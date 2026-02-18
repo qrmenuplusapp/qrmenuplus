@@ -64,3 +64,19 @@ export async function login(username: string, password: string) {
     return { success: false, error: error.message };
   }
 }
+
+// جلب جميع العملاء
+export async function getAllClients() {
+  try {
+    const { data, error } = await supabase
+      .from('clients')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return { success: true, clients: data };
+  } catch (error: any) {
+    return { success: false, error: error.message, clients: [] };
+  }
+}
