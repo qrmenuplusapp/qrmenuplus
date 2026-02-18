@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { login } from "@/lib/auth";
 
 export default function Login() {
   const router = useRouter();
@@ -15,16 +16,18 @@ export default function Login() {
     setError("");
     setLoading(true);
 
-    // هنا سنتحقق من قاعدة البيانات لاحقاً
-    // حالياً نضع مستخدم تجريبي
-    if (username === "alfanar" && password === "123456") {
-      // حفظ الجلسة
-      localStorage.setItem("user", JSON.stringify({ username, role: "client" }));
-      router.push("/dashboard");
-    } else {
-      setError("اسم المستخدم أو كلمة المرور غير صحيحة");
+    // التحقق من قاعدة البيانات
+    const result = await login(username, password);
+
+    if (!result.success) {
+      setError(result.error || "حدث خطأ ما");
       setLoading(false);
+      return;
     }
+
+    // حفظ الجلسة
+    localStorage.setItem("user", JSON.stringify(result.user));
+    router.push("/dashboard");
   };
 
   return (
