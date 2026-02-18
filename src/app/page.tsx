@@ -57,7 +57,7 @@ export default function Home() {
           <a href="#how" style={{ color: "#94a3b8", textDecoration: "none", fontSize: "0.88rem", fontWeight: 600 }}>كيف يعمل</a>
           <a href="#features" style={{ color: "#94a3b8", textDecoration: "none", fontSize: "0.88rem", fontWeight: 600 }}>المميزات</a>
           <a href="#pricing" style={{ color: "#94a3b8", textDecoration: "none", fontSize: "0.88rem", fontWeight: 600 }}>الأسعار</a>
-          <Link href="/dashboard" style={{ background: "#f97316", color: "#fff", padding: "9px 22px", borderRadius: 50, textDecoration: "none", fontSize: "0.88rem", fontWeight: 700, boxShadow: "0 3px 14px rgba(249,115,22,0.35)" }}>الدخول إلى لوحة التحكم</Link>
+          <Link href="/login" style={{ background: "#f97316", color: "#fff", padding: "9px 22px", borderRadius: 50, textDecoration: "none", fontSize: "0.88rem", fontWeight: 700, boxShadow: "0 3px 14px rgba(249,115,22,0.35)" }}>الدخول إلى لوحة التحكم</Link>
         </div>
       </nav>
 
@@ -93,7 +93,7 @@ export default function Home() {
             امنح زبائنك تجربة طلب عصرية وسريعة عبر كود QR مخصص لمطعمك. بدون تطبيق، بدون ورق، بدون انتظار.
           </p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/dashboard" style={{ background: "#f97316", color: "#fff", padding: "14px 32px", borderRadius: 50, textDecoration: "none", fontSize: "0.95rem", fontWeight: 700, boxShadow: "0 4px 20px rgba(249,115,22,0.35)" }}>🚀 ابدأ تجربتك المجانية</Link>
+            <Link href="/login" style={{ background: "#f97316", color: "#fff", padding: "14px 32px", borderRadius: 50, textDecoration: "none", fontSize: "0.95rem", fontWeight: 700, boxShadow: "0 4px 20px rgba(249,115,22,0.35)" }}>🚀 ابدأ تجربتك المجانية</Link>
             <Link href="/menu/demo" style={{ background: "#1c1f2c", color: "#f1f5f9", padding: "14px 32px", borderRadius: 50, textDecoration: "none", fontSize: "0.95rem", fontWeight: 600, border: "1px solid rgba(255,255,255,0.08)" }}>👀 شاهد مثالاً</Link>
           </div>
           {/* Stats */}
@@ -204,7 +204,7 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/dashboard" style={{ display: "block", background: p.popular ? "#f97316" : "#1c1f2c", color: "#fff", padding: 13, borderRadius: 12, textDecoration: "none", fontWeight: 700, fontSize: "0.9rem", border: p.popular ? "none" : "1px solid rgba(255,255,255,0.08)" }}>ابدأ مجاناً</Link>
+                <Link href="/login" style={{ display: "block", background: p.popular ? "#f97316" : "#1c1f2c", color: "#fff", padding: 13, borderRadius: 12, textDecoration: "none", fontWeight: 700, fontSize: "0.9rem", border: p.popular ? "none" : "1px solid rgba(255,255,255,0.08)" }}>ابدأ مجاناً</Link>
               </div>
             ))}
           </div>
@@ -240,7 +240,7 @@ export default function Home() {
             </h2>
             <p style={{ color: "#94a3b8", marginBottom: 32, position: "relative" }}>انضم لأكثر من 500 مطعم ومقهى يستخدم QRMenu. شهر أول مجاني بدون بطاقة بنكية.</p>
             <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
-              <Link href="/dashboard" style={{ background: "#f97316", color: "#fff", padding: "14px 32px", borderRadius: 50, textDecoration: "none", fontWeight: 700, fontSize: "0.95rem", boxShadow: "0 4px 20px rgba(249,115,22,0.35)" }}>🎉 أنشئ قائمتك الآن مجاناً</Link>
+              <Link href="/login" style={{ background: "#f97316", color: "#fff", padding: "14px 32px", borderRadius: 50, textDecoration: "none", fontWeight: 700, fontSize: "0.95rem", boxShadow: "0 4px 20px rgba(249,115,22,0.35)" }}>🎉 أنشئ قائمتك الآن مجاناً</Link>
             </div>
             <p style={{ fontSize: "0.8rem", color: "#4b5563", marginTop: 16, position: "relative" }}>✓ مجاني لمدة شهر · ✓ لا بطاقة مطلوبة · ✓ إلغاء في أي وقت</p>
           </div>
