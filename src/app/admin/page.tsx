@@ -5,7 +5,6 @@ import { createClient as createClientInDB, getAllClients } from "@/lib/auth";
 
 type Client = { id: string; name: string; subdomain: string; plan: string; status: string; created: string; expires: string; emoji: string; color: string };
 
-// بدون بيانات وهمية
   { id: "1", name: "مطعم الفنار", subdomain: "alfanar", plan: "شهري", status: "active", created: "10 يناير 2025", expires: "15 مارس 2025", emoji: "🍕", color: "rgba(249,115,22,0.13)" },
   { id: "2", name: "كافيه نوفا", subdomain: "nova", plan: "سنوي", status: "active", created: "1 يناير 2025", expires: "1 يناير 2026", emoji: "☕", color: "rgba(59,130,246,0.13)" },
   { id: "3", name: "مطعم الأصيل", subdomain: "aseel", plan: "نصف سنوي", status: "expiring", created: "20 أغسطس 2024", expires: "20 فبراير 2025", emoji: "🍖", color: "rgba(245,158,11,0.13)" },
