@@ -1,13 +1,11 @@
 "use client";
-import { createClient as createClientInDB, getAllClients } from "@/lib/auth";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { createClient as createClientInDB } from "@/lib/auth";
+import { createClient as createClientInDB, getAllClients } from "@/lib/auth";
 
 type Client = { id: string; name: string; subdomain: string; plan: string; status: string; created: string; expires: string; emoji: string; color: string };
 
-const initClients: Client[] = [
+// بدون بيانات وهمية
   { id: "1", name: "مطعم الفنار", subdomain: "alfanar", plan: "شهري", status: "active", created: "10 يناير 2025", expires: "15 مارس 2025", emoji: "🍕", color: "rgba(249,115,22,0.13)" },
   { id: "2", name: "كافيه نوفا", subdomain: "nova", plan: "سنوي", status: "active", created: "1 يناير 2025", expires: "1 يناير 2026", emoji: "☕", color: "rgba(59,130,246,0.13)" },
   { id: "3", name: "مطعم الأصيل", subdomain: "aseel", plan: "نصف سنوي", status: "expiring", created: "20 أغسطس 2024", expires: "20 فبراير 2025", emoji: "🍖", color: "rgba(245,158,11,0.13)" },
@@ -60,7 +58,8 @@ const S: Record<string, any> = {
 
 export default function Admin() {
   const [page, setPage] = useState("dashboard");
-  const [clients, setClients] = useState<Client[]>(initClients);
+  const [clients, setClients] = useState<Client[]>([]);
+const [loadingClients, setLoadingClients] = useState(true);
   const [modal, setModal] = useState(false);
   const [detailClient, setDetailClient] = useState<Client | null>(null);
   const [toast, setToast] = useState({ show: false, msg: "" });
@@ -69,6 +68,32 @@ export default function Admin() {
   const [statusFilter, setStatusFilter] = useState("all");
 
   const showToast = (msg: string) => { setToast({ show: true, msg }); setTimeout(() => setToast({ show: false, msg: "" }), 2600); };
+
+  // جلب العملاء عند تحميل الصفحة
+  useEffect(() => {
+    loadClients();
+  }, []);
+
+  const loadClients = async () => {
+    setLoadingClients(true);
+    const result = await getAllClients();
+    if (result.success && result.clients) {
+      // تحويل البيانات للشكل المطلوب
+      const formatted = result.clients.map((c: any) => ({
+        id: c.id,
+        name: c.name,
+        subdomain: c.subdomain,
+        plan: c.plan === 'trial' ? 'تجريبي' : c.plan === 'monthly' ? 'شهري' : c.plan === 'semi' ? 'نصف سنوي' : 'سنوي',
+        status: c.status,
+        created: new Date(c.created_at).toLocaleDateString("ar-SA"),
+        expires: c.expires_at ? new Date(c.expires_at).toLocaleDateString("ar-SA") : "—",
+        emoji: ["🏪", "☕", "🍽", "🥗", "🍖", "🍕", "🍔"][Math.floor(Math.random() * 7)],
+        color: ["rgba(249,115,22,0.13)", "rgba(59,130,246,0.13)", "rgba(34,197,94,0.13)", "rgba(168,85,247,0.13)"][Math.floor(Math.random() * 4)]
+      }));
+      setClients(formatted);
+    }
+    setLoadingClients(false);
+  };
 
   const addClient = async () => {
     if (!newName.trim() || !newSub.trim()) { showToast("⚠️ أدخل الاسم والـ Subdomain"); return; }
@@ -107,7 +132,9 @@ export default function Admin() {
       emoji: emojis[Math.floor(Math.random() * emojis.length)], 
       color: colors[Math.floor(Math.random() * colors.length)] 
     };
-    setClients(c => [nc, ...c]);
+    
+    // إعادة تحميل القائمة من قاعدة البيانات
+    loadClients();
     
     setModal(false); 
     setNewName(""); setNewSub(""); setNewEmail(""); setNewPhone(""); setNewUsername(""); setNewPassword("");
@@ -232,7 +259,12 @@ export default function Admin() {
                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                   <thead><tr>{["العميل", "الخطة", "الحالة", "الانتهاء", "إجراءات"].map(h => <th key={h} style={S.th}>{h}</th>)}</tr></thead>
                   <tbody>
-                    {clients.slice(0, 4).map(c => (
+                    {loadingClients ? (
+                      <tr><td colSpan={5} style={{ ...S.td, textAlign: "center", padding: "40px", color: "#4b5563" }}>⏳ جارٍ تحميل البيانات...</td></tr>
+                    ) : clients.length === 0 ? (
+                      <tr><td colSpan={5} style={{ ...S.td, textAlign: "center", padding: "40px", color: "#4b5563" }}>لا توجد عملاء بعد. اضغط "عميل جديد" لإضافة أول عميل</td></tr>
+                    ) : (
+                      clients.slice(0, 4).map(c => (
                       <tr key={c.id} style={{ transition: "background 0.15s" }}>
                         <td style={S.td}>
                           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -253,7 +285,7 @@ export default function Admin() {
                           </div>
                         </td>
                       </tr>
-                    ))}
+                    )))}
                   </tbody>
                 </table>
               </div>
