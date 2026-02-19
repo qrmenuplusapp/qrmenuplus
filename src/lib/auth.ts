@@ -27,7 +27,25 @@ export async function createClient(data: {
 
     if (clientError) throw clientError;
 
-    // 2. إضافة بيانات الدخول في جدول users
+    // 2. إنشاء مطعم للعميل تلقائياً
+    const { data: restaurant, error: restaurantError } = await supabase
+      .from('restaurants')
+      .insert({
+        client_id: client.id,
+        name: data.name,
+        description: '',
+        address: '',
+        phone: data.phone || '',
+        wifi_name: '',
+        wifi_password: '',
+        color: '#f97316',
+      })
+      .select()
+      .single();
+
+    if (restaurantError) throw restaurantError;
+
+    // 3. إضافة بيانات الدخول في جدول users
     const { error: userError } = await supabase
       .from('users')
       .insert({
@@ -39,7 +57,7 @@ export async function createClient(data: {
 
     if (userError) throw userError;
 
-    return { success: true, client };
+    return { success: true, client, restaurant };
   } catch (error: any) {
     return { success: false, error: error.message };
   }
