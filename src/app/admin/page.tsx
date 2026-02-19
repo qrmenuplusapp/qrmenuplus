@@ -5,14 +5,6 @@ import { createClient as createClientInDB, getAllClients } from "@/lib/auth";
 
 type Client = { id: string; name: string; subdomain: string; plan: string; status: string; created: string; expires: string; emoji: string; color: string };
 
-  { id: "1", name: "مطعم الفنار", subdomain: "alfanar", plan: "شهري", status: "active", created: "10 يناير 2025", expires: "15 مارس 2025", emoji: "🍕", color: "rgba(249,115,22,0.13)" },
-  { id: "2", name: "كافيه نوفا", subdomain: "nova", plan: "سنوي", status: "active", created: "1 يناير 2025", expires: "1 يناير 2026", emoji: "☕", color: "rgba(59,130,246,0.13)" },
-  { id: "3", name: "مطعم الأصيل", subdomain: "aseel", plan: "نصف سنوي", status: "expiring", created: "20 أغسطس 2024", expires: "20 فبراير 2025", emoji: "🍖", color: "rgba(245,158,11,0.13)" },
-  { id: "4", name: "سوشي تايم", subdomain: "sushi", plan: "شهري", status: "expired", created: "5 ديسمبر 2024", expires: "1 فبراير 2025", emoji: "🍣", color: "rgba(239,68,68,0.13)" },
-  { id: "5", name: "فريش سلاد", subdomain: "fresh", plan: "سنوي", status: "active", created: "15 نوفمبر 2024", expires: "15 نوفمبر 2025", emoji: "🥗", color: "rgba(34,197,94,0.13)" },
-  { id: "6", name: "برغر هاوس", subdomain: "burger", plan: "شهري", status: "trial", created: "10 فبراير 2025", expires: "10 مارس 2025", emoji: "🍔", color: "rgba(168,85,247,0.13)" },
-];
-
 const S: Record<string, any> = {
   page: { minHeight: "100vh", background: "#09090f", color: "#f1f5f9", fontFamily: "'Cairo','Tajawal',sans-serif", display: "flex" },
   sidebar: { width: 220, flexShrink: 0, background: "#0e1017", borderLeft: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", height: "100vh", position: "sticky", top: 0 },
