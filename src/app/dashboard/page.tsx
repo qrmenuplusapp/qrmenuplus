@@ -65,7 +65,7 @@ function DashboardContent() {
   const [editingCat, setEditingCat] = useState<Category | null>(null);
   const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [catName, setCatName] = useState(""); const [catEmoji, setCatEmoji] = useState("🍽"); const [catImage, setCatImage] = useState<File | null>(null); const [catImagePreview, setCatImagePreview] = useState("");
-  const [itemName, setItemName] = useState(""); const [itemDesc, setItemDesc] = useState(""); const [itemPrice, setItemPrice] = useState(""); const [itemCatId, setItemCatId] = useState(""); const [itemEmoji, setItemEmoji] = useState("🍽"); const [itemImage, setItemImage] = useState<File | null>(null); const [itemImagePreview, setItemImagePreview] = useState("");
+  const [itemName, setItemName] = useState(""); const [itemDesc, setItemDesc] = useState(""); const [itemPrice, setItemPrice] = useState(""); const [itemCatId, setItemCatId] = useState(""); const [itemImage, setItemImage] = useState<File | null>(null); const [itemImagePreview, setItemImagePreview] = useState("");
   const [restName, setRestName] = useState(""); const [restDesc, setRestDesc] = useState(""); const [restPhone, setRestPhone] = useState(""); const [restAddress, setRestAddress] = useState(""); const [wifiName, setWifiName] = useState(""); const [wifiPass, setWifiPass] = useState("");
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [menuUrl, setMenuUrl] = useState("");
@@ -223,8 +223,8 @@ function DashboardContent() {
     } catch { showToast("❌ خطأ"); }
   };
 
-  const openAddItem = () => { setItemName(""); setItemDesc(""); setItemPrice(""); setItemCatId(categories[0]?.id || ""); setItemEmoji("🍽"); setItemImage(null); setItemImagePreview(""); setEditingItem(null); setModal("addItem"); };
-  const openEditItem = (i: Item) => { setEditingItem(i); setItemName(i.name); setItemDesc(i.description); setItemPrice(i.price.toString()); setItemCatId(i.category_id); setItemEmoji(i.emoji); setItemImagePreview(i.image_url || ""); setModal("editItem"); };
+  const openAddItem = () => { setItemName(""); setItemDesc(""); setItemPrice(""); setItemCatId(categories[0]?.id || ""); setItemImage(null); setItemImagePreview(""); setEditingItem(null); setModal("addItem"); };
+  const openEditItem = (i: Item) => { setEditingItem(i); setItemName(i.name); setItemDesc(i.description); setItemPrice(i.price.toString()); setItemCatId(i.category_id); setItemImagePreview(i.image_url || ""); setModal("editItem"); };
 
   const handleItemImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -249,12 +249,12 @@ function DashboardContent() {
       if (editingItem) {
         await dashboardApi('updateItem', {
           id: editingItem.id,
-          payload: { name: itemName, description: itemDesc, price: parseFloat(itemPrice), category_id: itemCatId, emoji: itemEmoji, image_url: imageUrl }
+          payload: { name: itemName, description: itemDesc, price: parseFloat(itemPrice), category_id: itemCatId, image_url: imageUrl }
         });
         showToast("✅ تم التعديل!");
       } else {
         await dashboardApi('insertItem', {
-          payload: { category_id: itemCatId, name: itemName, description: itemDesc, price: parseFloat(itemPrice), emoji: itemEmoji, image_url: imageUrl, is_visible: true, sort_order: items.length }
+          payload: { category_id: itemCatId, name: itemName, description: itemDesc, price: parseFloat(itemPrice), image_url: imageUrl, is_visible: true, sort_order: items.length }
         });
         showToast("✅ تم الإضافة!");
       }
@@ -374,7 +374,7 @@ function DashboardContent() {
               {filteredItems.length === 0 ? <div style={{ textAlign: "center", padding: 40, color: "#4b5563" }}>اضغط + لإضافة صنف</div> : filteredItems.map(it => (
                 <div key={it.id} style={{ ...S.card, marginBottom: 10, opacity: it.is_visible ? 1 : 0.5 }}>
                   <div style={{ display: "flex" }}>
-                    {it.image_url ? <img src={it.image_url} alt={it.name} style={{ width: 82, height: 82, objectFit: "cover", borderRadius: "14px 0 0 14px" }} /> : <div style={{ width: 82, background: "#1c1f2c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, borderRadius: "14px 0 0 14px" }}>{it.emoji}</div>}
+                    {it.image_url ? <img src={it.image_url} alt={it.name} style={{ width: 82, height: 82, objectFit: "cover", borderRadius: "14px 0 0 14px" }} /> : <div style={{ width: 82, background: "#1c1f2c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, borderRadius: "14px 0 0 14px" }}>🍽</div>}
                     <div style={{ flex: 1, padding: 12 }}>
                       <div style={{ fontSize: "0.9rem", fontWeight: 800, marginBottom: 4 }}>{it.name}</div>
                       <div style={{ fontSize: "0.75rem", color: "#4b5563", marginBottom: 8, lineHeight: 1.4 }}>{it.description}</div>
@@ -457,7 +457,6 @@ function DashboardContent() {
                 <div style={S.formGroup}><label style={S.formLabel}>السعر</label><input style={S.formInput} type="number" value={itemPrice} onChange={e => setItemPrice(e.target.value)} /></div>
                 <div style={S.formGroup}><label style={S.formLabel}>القسم</label><select style={S.formInput} value={itemCatId} onChange={e => setItemCatId(e.target.value)}>{categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}</select></div>
               </div>
-              <div style={S.formGroup}><label style={S.formLabel}>الأيقونة</label><input style={{ ...S.formInput, fontSize: "1.4rem", textAlign: "center" }} maxLength={4} value={itemEmoji} onChange={e => setItemEmoji(e.target.value)} /></div>
               <button style={{ ...S.btnAccent, width: "100%", borderRadius: 12, padding: 13, justifyContent: "center" }} onClick={saveItem}>حفظ</button>
               <button style={{ ...S.btnGhost, width: "100%", borderRadius: 12, padding: 12, marginTop: 8, justifyContent: "center" }} onClick={() => setModal(null)}>إلغاء</button>
             </div>
