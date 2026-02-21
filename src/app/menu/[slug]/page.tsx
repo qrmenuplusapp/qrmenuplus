@@ -122,6 +122,7 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
   const [activeTab, setActiveTab] = useState("all");
   const [theme, setTheme] = useState<ThemeKey>("dark");
   const [showThemePicker, setShowThemePicker] = useState(false);
+  const [subscriptionEnded, setSubscriptionEnded] = useState(false);
 
   const T = THEMES[theme];
 
@@ -142,8 +143,19 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
 
   const loadMenu = async () => {
     try {
-      const { data: clientData, error: ce } = await supabase.from('clients').select('id').eq('subdomain', slug).single();
+      const { data: clientData, error: ce } = await supabase
+        .from('clients').select('id, status, expires_at, plan').eq('subdomain', slug).single();
       if (ce || !clientData) { setNotFound(true); setLoading(false); return; }
+
+      // ── التحقق من حالة الاشتراك ──
+      const now = new Date();
+      const isExpired =
+        clientData.status === 'expired' ||
+        clientData.status === 'frozen' ||
+        (clientData.expires_at && new Date(clientData.expires_at) < now);
+
+      if (isExpired) { setSubscriptionEnded(true); setLoading(false); return; }
+
       const { data: restData, error: re } = await supabase.from('restaurants').select('*').eq('client_id', clientData.id).single();
       if (re || !restData) { setNotFound(true); setLoading(false); return; }
       setRestaurant(restData);
@@ -176,6 +188,20 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
     <div style={{ minHeight: "100vh", background: "#09090f", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16, fontFamily: "'Cairo',sans-serif" }}>
       <div style={{ width: 52, height: 52, border: "3px solid rgba(249,115,22,0.15)", borderTop: "3px solid #f97316", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+    </div>
+  );
+
+  if (subscriptionEnded) return (
+    <div style={{ minHeight: "100vh", background: "#09090f", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 16, fontFamily: "'Cairo','Tajawal',sans-serif", textAlign: "center", padding: 24 }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@700;900&display=swap');`}</style>
+      <div style={{ width: 90, height: 90, borderRadius: 24, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44 }}>🔒</div>
+      <h1 style={{ color: "#f1f5f9", fontSize: "1.4rem", fontWeight: 900, fontFamily: "'Tajawal',sans-serif", margin: 0 }}>الاشتراك منتهي أو موقوف</h1>
+      <p style={{ color: "#6b7280", margin: 0, fontSize: "0.92rem", lineHeight: 1.7 }}>
+        هذه القائمة غير متاحة حالياً.<br />يرجى التواصل مع صاحب المطعم.
+      </p>
+      <div style={{ marginTop: 8, padding: "10px 24px", borderRadius: 50, background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", fontSize: "0.8rem", color: "#ef4444", fontWeight: 700 }}>
+        ● الاشتراك منتهي
+      </div>
     </div>
   );
 
