@@ -6,7 +6,8 @@ type Category = { id: string; name: string; emoji: string; is_visible: boolean; 
 type Item = { id: string; category_id: string; name: string; description: string; price: number; is_visible: boolean; image_url?: string };
 type Restaurant = { id: string; name: string; description: string; address: string; phone: string; wifi_name: string; wifi_password: string };
 
-export default function MenuPage({ params }: { params: { slug: string } }) {
+export default function MenuPage({ params }: { params: Promise<{ slug: string }> }) {
+  const [slug, setSlug] = useState<string>("");
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [items, setItems] = useState<Item[]>([]);
@@ -16,14 +17,18 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   useEffect(() => {
-    console.log('SLUG RECEIVED:', JSON.stringify(params.slug));
-    loadMenu();
-  }, [params.slug]);
+    params.then((p) => {
+      console.log('SLUG RECEIVED:', p.slug);
+      setSlug(p.slug);
+    });
+  }, []);
+
+  useEffect(() => { if (slug) loadMenu(); }, [slug]);
 
   const loadMenu = async () => {
     try {
       const { data: clientData, error: clientError } = await supabase
-        .from('clients').select('id').eq('subdomain', params.slug).single();
+        .from('clients').select('id').eq('subdomain', slug).single();
       if (clientError || !clientData) { setNotFound(true); setLoading(false); return; }
 
       const { data: restData, error: restError } = await supabase
