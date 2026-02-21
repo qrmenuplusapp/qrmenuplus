@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 
 type Category = { id: string; name: string; emoji: string; is_visible: boolean; sort_order: number; image_url?: string };
 type Item = { id: string; category_id: string; name: string; description: string; price: number; is_visible: boolean; image_url?: string };
-type Restaurant = { id: string; name: string; description: string; address: string; phone: string; wifi_name: string; wifi_password: string };
+type Restaurant = { id: string; name: string; description: string; address: string; phone: string; wifi_name: string; wifi_password: string; whatsapp?: string; google_maps_url?: string };
 
 const THEMES = {
   dark: {
@@ -107,6 +107,34 @@ const THEMES = {
 
 type ThemeKey = keyof typeof THEMES;
 
+// SVG Logo Component
+const QRMenuLogo = ({ height = 32 }: { height?: number }) => (
+  <svg height={height} viewBox="0 0 1311.49 260.36" xmlns="http://www.w3.org/2000/svg" style={{ display: "block" }}>
+    <defs>
+      <style>{`.lc1{fill:#f97316;stroke-width:0px}.lc4{fill:currentColor;font-size:231.66px}`}</style>
+    </defs>
+    <g>
+      <g>
+        <path className="lc1" d="m78.67,101.53H22.87c-12.61,0-22.87-10.26-22.87-22.87V22.87C0,10.26,10.26,0,22.87,0h55.8c12.61,0,22.87,10.26,22.87,22.87v55.8c0,12.61-10.26,22.87-22.87,22.87ZM22.87,19.24c-2,0-3.63,1.63-3.63,3.62v55.8c0,2,1.63,3.63,3.63,3.63h55.8c2,0,3.62-1.63,3.62-3.63V22.87c0-2-1.63-3.62-3.62-3.62H22.87Z"/>
+        <path className="lc1" d="m161.15,67.1h-19.24V19.24h-31.81V0h32.18c10.41,0,18.87,8.47,18.87,18.87v48.23Z"/>
+        <path className="lc1" d="m226.69,76.72h-38.98c-10.41,0-18.87-8.47-18.87-18.87V18.87c0-10.41,8.47-18.87,18.87-18.87h38.98c10.41,0,18.87,8.47,18.87,18.87v38.98c0,10.41-8.47,18.87-18.87,18.87Zm-38.61-19.24h38.24V19.24h-38.24v38.24Z"/>
+        <path className="lc1" d="m67.1,161.15H18.87c-10.41,0-18.87-8.47-18.87-18.87v-28.25h19.24v27.88h47.86v19.24Z"/>
+        <path className="lc1" d="m142.27,161.15h-48.23v-19.24h47.86v-32.22c0-10.41,8.47-18.87,18.87-18.87h54.45v19.24h-54.08v32.22c0,10.41-8.47,18.87-18.87,18.87Z"/>
+        <path className="lc1" d="m226.69,161.15h-48.23v-19.24h47.86v-47.86h19.24v48.23c0,10.41-8.47,18.87-18.87,18.87Z"/>
+        <path className="lc1" d="m57.85,245.57H18.87c-10.41,0-18.87-8.47-18.87-18.87v-38.98c0-10.41,8.47-18.87,18.87-18.87h38.98c10.41,0,18.87,8.47,18.87,18.87v38.98c0,10.41-8.47,18.87-18.87,18.87Zm-38.61-19.24h38.24v-38.24H19.24v38.24Z"/>
+        <path className="lc1" d="m151.52,245.57h-48.23c-10.41,0-18.87-8.47-18.87-18.87v-48.23h19.24v47.86h47.86v19.24Z"/>
+        <path className="lc1" d="m226.69,245.57h-38.98c-10.41,0-18.87-8.47-18.87-18.87v-38.98c0-10.41,8.47-18.87,18.87-18.87h38.98c10.41,0,18.87,8.47,18.87,18.87v38.98c0,10.41-8.47,18.87-18.87,18.87Zm-38.61-19.24h38.24v-38.24h-38.24v38.24Z"/>
+        <rect className="lc1" x="134.86" y="178.46" width="19.24" height="28.74"/>
+        <path className="lc1" d="m54.7,64.38h-14.39c-1.71,0-3.1-1.38-3.11-3.09l-.05-6.6v-14.39c0-1.71,1.38-3.1,3.09-3.11l6.6-.05h14.39c1.71,0,3.1,1.38,3.11,3.09l.05,6.6v14.39c0,1.71-1.38,3.1-3.09,3.11l-6.6.05Z"/>
+        <path className="lc1" d="m117.42,126.22h-12.9c-1.53,0-2.78-1.24-2.79-2.77l-.04-5.92v-12.9c0-1.53,1.24-2.78,2.77-2.79l5.92-.04h12.9c1.53,0,2.78,1.24,2.79,2.77l.04,5.92v12.9c0,1.53-1.24,2.78-2.77,2.79l-5.92.04Z"/>
+      </g>
+      <text className="lc4" transform="translate(296.57 201.51)" fontFamily="system-ui,sans-serif" fontWeight="900" fill="currentColor">
+        <tspan fontWeight="900">QR</tspan><tspan fontWeight="600">MENU</tspan>
+      </text>
+    </g>
+  </svg>
+);
+
 export default function MenuPage({ params }: { params: Promise<{ slug: string }> }) {
   const [slug, setSlug] = useState("");
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
@@ -126,7 +154,7 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
   useEffect(() => { params.then(p => setSlug(p.slug)); }, []);
   useEffect(() => { if (slug) loadMenu(); }, [slug]);
 
-  // حفظ الثيم محلياً
+  // تحميل الثيم: أولاً من الداشبورد (قاعدة البيانات)، ثم المحلي
   useEffect(() => {
     const saved = localStorage.getItem("menu-theme") as ThemeKey;
     if (saved && THEMES[saved]) setTheme(saved);
@@ -145,6 +173,13 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
       const { data: restData, error: re } = await supabase.from('restaurants').select('*').eq('client_id', clientData.id).single();
       if (re || !restData) { setNotFound(true); setLoading(false); return; }
       setRestaurant(restData);
+
+      // تطبيق الثيم المحدد من الداشبورد إن وُجد
+      if (restData.theme && THEMES[restData.theme as ThemeKey]) {
+        setTheme(restData.theme as ThemeKey);
+        localStorage.setItem("menu-theme", restData.theme);
+      }
+
       const { data: cats } = await supabase.from('categories').select('*').eq('restaurant_id', restData.id).eq('is_visible', true).order('sort_order');
       setCategories(cats || []);
       const catIds = (cats || []).map((c: any) => c.id);
@@ -211,6 +246,13 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
         </div>
 
         <div style={{ position: "relative", zIndex: 1, padding: "52px 24px 32px", textAlign: "center" }}>
+          {/* ===== LOGO ===== */}
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+            <div style={{ color: T.text }}>
+              <QRMenuLogo height={36} />
+            </div>
+          </div>
+
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.25)", borderRadius: 50, padding: "5px 16px", marginBottom: 20, fontSize: "0.72rem", fontWeight: 800, color: "#22c55e" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", display: "inline-block" }} />
             مفتوح الآن
@@ -222,12 +264,37 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
             <p style={{ color: T.textSub, fontSize: "0.9rem", maxWidth: 380, margin: "0 auto 20px", lineHeight: 1.75 }}>{restaurant.description}</p>
           )}
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            {/* زر الهاتف */}
             {restaurant?.phone && (
               <a href={`tel:${restaurant.phone}`} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: T.accentBg, border: `1px solid ${T.accentBorder}`, borderRadius: 50, padding: "9px 20px", color: T.accent, fontSize: "0.9rem", fontWeight: 800, textDecoration: "none" }}>
                 📞 {restaurant.phone}
               </a>
             )}
-            {restaurant?.address && (
+            {/* زر واتساب */}
+            {restaurant?.whatsapp && (
+              <a
+                href={`https://wa.me/${restaurant.whatsapp.replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(37,211,102,0.12)", border: "1px solid rgba(37,211,102,0.3)", borderRadius: 50, padding: "9px 20px", color: "#25d366", fontSize: "0.9rem", fontWeight: 800, textDecoration: "none" }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                واتساب
+              </a>
+            )}
+            {/* زر الموقع على غوغل */}
+            {restaurant?.google_maps_url && (
+              <a
+                href={restaurant.google_maps_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(66,133,244,0.1)", border: "1px solid rgba(66,133,244,0.25)", borderRadius: 50, padding: "9px 20px", color: "#4285f4", fontSize: "0.9rem", fontWeight: 800, textDecoration: "none" }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#4285f4"/></svg>
+                الموقع
+              </a>
+            )}
+            {restaurant?.address && !restaurant?.google_maps_url && (
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: T.surface, border: `1px solid ${T.border}`, borderRadius: 50, padding: "9px 20px", color: T.textSub, fontSize: "0.88rem", fontWeight: 700 }}>
                 📍 {restaurant.address}
               </div>
