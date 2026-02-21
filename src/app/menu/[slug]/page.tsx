@@ -107,33 +107,7 @@ const THEMES = {
 
 type ThemeKey = keyof typeof THEMES;
 
-// SVG Logo Component
-const QRMenuLogo = ({ height = 32 }: { height?: number }) => (
-  <svg height={height} viewBox="0 0 1311.49 260.36" xmlns="http://www.w3.org/2000/svg" style={{ display: "block" }}>
-    <defs>
-      <style>{`.lc1{fill:#f97316;stroke-width:0px}.lc4{fill:currentColor;font-size:231.66px}`}</style>
-    </defs>
-    <g>
-      <g>
-        <path className="lc1" d="m78.67,101.53H22.87c-12.61,0-22.87-10.26-22.87-22.87V22.87C0,10.26,10.26,0,22.87,0h55.8c12.61,0,22.87,10.26,22.87,22.87v55.8c0,12.61-10.26,22.87-22.87,22.87ZM22.87,19.24c-2,0-3.63,1.63-3.63,3.62v55.8c0,2,1.63,3.63,3.63,3.63h55.8c2,0,3.62-1.63,3.62-3.63V22.87c0-2-1.63-3.62-3.62-3.62H22.87Z"/>
-        <path className="lc1" d="m161.15,67.1h-19.24V19.24h-31.81V0h32.18c10.41,0,18.87,8.47,18.87,18.87v48.23Z"/>
-        <path className="lc1" d="m226.69,76.72h-38.98c-10.41,0-18.87-8.47-18.87-18.87V18.87c0-10.41,8.47-18.87,18.87-18.87h38.98c10.41,0,18.87,8.47,18.87,18.87v38.98c0,10.41-8.47,18.87-18.87,18.87Zm-38.61-19.24h38.24V19.24h-38.24v38.24Z"/>
-        <path className="lc1" d="m67.1,161.15H18.87c-10.41,0-18.87-8.47-18.87-18.87v-28.25h19.24v27.88h47.86v19.24Z"/>
-        <path className="lc1" d="m142.27,161.15h-48.23v-19.24h47.86v-32.22c0-10.41,8.47-18.87,18.87-18.87h54.45v19.24h-54.08v32.22c0,10.41-8.47,18.87-18.87,18.87Z"/>
-        <path className="lc1" d="m226.69,161.15h-48.23v-19.24h47.86v-47.86h19.24v48.23c0,10.41-8.47,18.87-18.87,18.87Z"/>
-        <path className="lc1" d="m57.85,245.57H18.87c-10.41,0-18.87-8.47-18.87-18.87v-38.98c0-10.41,8.47-18.87,18.87-18.87h38.98c10.41,0,18.87,8.47,18.87,18.87v38.98c0,10.41-8.47,18.87-18.87,18.87Zm-38.61-19.24h38.24v-38.24H19.24v38.24Z"/>
-        <path className="lc1" d="m151.52,245.57h-48.23c-10.41,0-18.87-8.47-18.87-18.87v-48.23h19.24v47.86h47.86v19.24Z"/>
-        <path className="lc1" d="m226.69,245.57h-38.98c-10.41,0-18.87-8.47-18.87-18.87v-38.98c0-10.41,8.47-18.87,18.87-18.87h38.98c10.41,0,18.87,8.47,18.87,18.87v38.98c0,10.41-8.47,18.87-18.87,18.87Zm-38.61-19.24h38.24v-38.24h-38.24v38.24Z"/>
-        <rect className="lc1" x="134.86" y="178.46" width="19.24" height="28.74"/>
-        <path className="lc1" d="m54.7,64.38h-14.39c-1.71,0-3.1-1.38-3.11-3.09l-.05-6.6v-14.39c0-1.71,1.38-3.1,3.09-3.11l6.6-.05h14.39c1.71,0,3.1,1.38,3.11,3.09l.05,6.6v14.39c0,1.71-1.38,3.1-3.09,3.11l-6.6.05Z"/>
-        <path className="lc1" d="m117.42,126.22h-12.9c-1.53,0-2.78-1.24-2.79-2.77l-.04-5.92v-12.9c0-1.53,1.24-2.78,2.77-2.79l5.92-.04h12.9c1.53,0,2.78,1.24,2.79,2.77l.04,5.92v12.9c0,1.53-1.24,2.78-2.77,2.79l-5.92.04Z"/>
-      </g>
-      <text className="lc4" transform="translate(296.57 201.51)" fontFamily="system-ui,sans-serif" fontWeight="900" fill="currentColor">
-        <tspan fontWeight="900">QR</tspan><tspan fontWeight="600">MENU</tspan>
-      </text>
-    </g>
-  </svg>
-);
+
 
 export default function MenuPage({ params }: { params: Promise<{ slug: string }> }) {
   const [slug, setSlug] = useState("");
@@ -248,9 +222,11 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
         <div style={{ position: "relative", zIndex: 1, padding: "52px 24px 32px", textAlign: "center" }}>
           {/* ===== LOGO ===== */}
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
-            <div style={{ color: T.text }}>
-              <QRMenuLogo height={36} />
-            </div>
+            <img
+              src="/qr_menu_logo.svg"
+              alt="QRMenu"
+              style={{ height: 36, filter: theme === "light" ? "brightness(0)" : "brightness(1)" }}
+            />
           </div>
 
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.25)", borderRadius: 50, padding: "5px 16px", marginBottom: 20, fontSize: "0.72rem", fontWeight: 800, color: "#22c55e" }}>
