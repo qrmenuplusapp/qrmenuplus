@@ -193,7 +193,7 @@ export default function Home() {
                 {p.popular && <div style={{ position: "absolute", top: 16, right: 16, background: "#f97316", color: "#fff", padding: "3px 12px", borderRadius: 50, fontSize: "0.72rem", fontWeight: 800 }}>الأكثر طلباً ⭐</div>}
                 <div style={{ fontSize: "0.8rem", fontWeight: 800, color: "#4b5563", marginBottom: 14, marginTop: p.popular ? 20 : 0 }}>{p.plan}</div>
                 <div style={{ fontFamily: "'Tajawal',sans-serif", fontSize: "3rem", fontWeight: 900, color: p.color, lineHeight: 1 }}>
-                  {p.price}<span style={{ fontSize: "0.9rem", color: "#94a3b8", fontWeight: 400 }}> ر.س/شهر</span>
+                  {p.price}<span style={{ fontSize: "0.9rem", color: "#94a3b8", fontWeight: 400 }}> ل.س/شهر</span>
                 </div>
                 {p.save && <div style={{ fontSize: "0.75rem", color: "#22c55e", fontWeight: 700, marginTop: 4 }}>{p.save}</div>}
                 <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "20px 0" }} />
