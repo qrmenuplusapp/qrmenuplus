@@ -324,7 +324,7 @@ function DashboardContent() {
 
       <header style={S.header}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <img src="/qr_menu_logo.svg" alt="QRMenu" style={{ height: 28 }} />
+          <img src="/qr_menu_logo.svg" alt="QRMenu" style={{ height: 28, width: 140, objectFit: "contain" }} />
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           <div style={S.btnSm} onClick={generateQR}>📱</div>
