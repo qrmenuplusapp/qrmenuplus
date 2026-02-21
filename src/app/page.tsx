@@ -179,9 +179,9 @@ export default function Home() {
           <p style={{ color: "#94a3b8", marginBottom: 50 }}>اختر الخطة التي تناسب مطعمك. شهر أول مجاني تماماً.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 20, alignItems: "start" }}>
             {[
-              { plan: "شهري", price: "39", save: "", color: "#f97316", popular: false, features: ["Subdomain مخصص", "أقسام وأصناف غير محدودة", "صور للأصناف", "كود QR للقائمة"] },
-              { plan: "نصف سنوي", price: "33", save: "توفير 15%", color: "#f97316", popular: true, features: ["كل مميزات الشهري", "دعم متعدد اللغات", "أولوية في الدعم", "تقارير مفصّلة"] },
-              { plan: "سنوي", price: "29", save: "توفير 26%", color: "#22c55e", popular: false, features: ["كل المميزات", "دعم متعدد اللغات", "إضافة موظفين", "دعم VIP"] },
+              { plan: "شهري", price: "50,000", save: "", color: "#f97316", popular: false, features: ["Subdomain مخصص", "أقسام وأصناف غير محدودة", "صور للأصناف", "كود QR للقائمة"] },
+              { plan: "نصف سنوي", price: "270,000", save: "توفير 15%", color: "#f97316", popular: true, features: ["كل مميزات الشهري", "دعم متعدد اللغات", "أولوية في الدعم", "تقارير مفصّلة"] },
+              { plan: "سنوي", price: "480,000", save: "توفير 26%", color: "#22c55e", popular: false, features: ["كل المميزات", "دعم متعدد اللغات", "إضافة موظفين", "دعم VIP"] },
             ].map((p, i) => (
               <div key={i} style={{
                 background: p.popular ? "linear-gradient(135deg,#1a1e28,rgba(249,115,22,0.08))" : "#13161e",
