@@ -225,7 +225,7 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
             <img
               src="/qr_menu_logo.svg"
               alt="QRMenu"
-              style={{ height: 36, width: 180, objectFit: "contain", filter: theme === "light" ? "brightness(0)" : "brightness(1)" }}
+              style={{ height: 40, width: "auto", filter: theme === "light" ? "brightness(0)" : "brightness(1)" }}
             />
           </div>
 
