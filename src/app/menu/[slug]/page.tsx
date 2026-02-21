@@ -417,7 +417,7 @@ export default function MenuPage({ params }: { params: Promise<{ slug: string }>
 
       {/* ===== FOOTER ===== */}
       <div style={{ textAlign: "center", padding: "40px 20px 0", color: T.textMuted, fontSize: "0.72rem", fontWeight: 700 }}>
-        مدعوم بـ <span style={{ color: T.accent }}>QRMenu</span>
+        صمم بواسطة <span style={{ color: T.accent }}>Malik Mehmetoglu</span>
       </div>
     </div>
   );
