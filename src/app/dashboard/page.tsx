@@ -122,7 +122,7 @@ function DashboardContent() {
         }
 
         const { data: clientData } = await supabase.from('clients').select('subdomain').eq('id', clientId).single();
-        const url = `https://${clientData?.subdomain || 'menu'}.qrmenu.it.com`;
+        const url = `https://${clientData?.subdomain || 'menu'}.${process.env.NEXT_PUBLIC_DOMAIN || 'pro.qrmenu.it.com'}`;
         setMenuUrl(url);
 
         const { data: cats } = await supabase.from('categories').select('*').eq('restaurant_id', restData.id).order('sort_order');
