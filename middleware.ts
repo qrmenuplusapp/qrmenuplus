@@ -4,8 +4,8 @@ export function middleware(req: NextRequest) {
   const hostname = req.headers.get('host') || ''
   const url = req.nextUrl.clone()
 
-  const mainDomain = 'qrmenu.it.com'
-  const wwwDomain = 'www.qrmenu.it.com'
+  const mainDomain = 'pro.qrmenu.it.com'
+  const wwwDomain = 'www.pro.qrmenu.it.com'
 
   // تجاهل الدومين الرئيسي
   if (hostname === mainDomain || hostname === wwwDomain) {
