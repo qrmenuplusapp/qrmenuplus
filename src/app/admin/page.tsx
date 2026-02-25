@@ -501,7 +501,7 @@ export default function Admin() {
                             <div style={{ width: 32, height: 32, borderRadius: 9, background: c.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>{c.emoji}</div>
                             <div>
                               <div style={{ fontWeight: 700, fontSize: "0.88rem" }}>{c.name}</div>
-                              <div style={{ fontSize: "0.7rem", color: "#f97316", direction: "ltr" }}>{c.subdomain}.qrmenu.it.com</div>
+                              <div style={{ fontSize: "0.7rem", color: "#f97316", direction: "ltr" }}>{c.subdomain}.{process.env.NEXT_PUBLIC_DOMAIN || 'pro.qrmenu.it.com'}</div>
                             </div>
                           </div>
                         </td>
@@ -547,7 +547,7 @@ export default function Admin() {
                             <div style={{ width: 32, height: 32, borderRadius: 9, background: c.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>{c.emoji}</div>
                             <div>
                               <div style={{ fontWeight: 700, fontSize: "0.88rem" }}>{c.name}</div>
-                              <div style={{ fontSize: "0.7rem", color: "#f97316", direction: "ltr" }}>{c.subdomain}.qrmenu.it.com</div>
+                              <div style={{ fontSize: "0.7rem", color: "#f97316", direction: "ltr" }}>{c.subdomain}.{process.env.NEXT_PUBLIC_DOMAIN || 'pro.qrmenu.it.com'}</div>
                             </div>
                           </div>
                         </td>
@@ -684,7 +684,7 @@ export default function Admin() {
                 <button style={S.btn("accent")} onClick={() => showToast("💾 تم حفظ الإعدادات!")}>💾 حفظ</button>
               </div>
               {[
-                { title: "معلومات المنصة", rows: [{ label: "اسم المنصة", value: "QRMenu" }, { label: "الدومين الرئيسي", value: "qrmenu.it.com" }] },
+                { title: "معلومات المنصة", rows: [{ label: "اسم المنصة", value: "QRMenu" }, { label: "الدومين الرئيسي", value: process.env.NEXT_PUBLIC_DOMAIN || "pro.qrmenu.it.com" }] },
                 { title: "الاشتراكات والأسعار (ليرة سورية)", rows: [
                   { label: "سعر الشهري (ل.س)", value: PLANS.monthly.price.toString() },
                   { label: "سعر نصف السنوي (ل.س)", value: PLANS.semi.price.toString() },
@@ -861,7 +861,7 @@ export default function Admin() {
               <div style={{ textAlign: "center", marginBottom: 20 }}>
                 <div style={{ width: 60, height: 60, borderRadius: 16, background: detailClient.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, margin: "0 auto 10px" }}>{detailClient.emoji}</div>
                 <div style={{ fontFamily: "'Tajawal',sans-serif", fontSize: "1.15rem", fontWeight: 900 }}>{detailClient.name}</div>
-                <div style={{ fontSize: "0.8rem", color: "#f97316", direction: "ltr", marginTop: 4 }}>{detailClient.subdomain}.qrmenu.it.com</div>
+                <div style={{ fontSize: "0.8rem", color: "#f97316", direction: "ltr", marginTop: 4 }}>{detailClient.subdomain}.{process.env.NEXT_PUBLIC_DOMAIN || 'pro.qrmenu.it.com'}</div>
                 <div style={{ marginTop: 8 }}><span style={S.pill(detailClient.status)}>{statusLabel[detailClient.status]}</span></div>
               </div>
 
