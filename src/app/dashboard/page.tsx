@@ -6,7 +6,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 
 type Category = { id: string; name: string; emoji: string; is_visible: boolean; sort_order: number; image_url?: string };
 type Item = { id: string; category_id: string; name: string; description: string; price: number; is_visible: boolean; emoji: string; image_url?: string };
-type Restaurant = { id: string; name: string; description: string; address: string; phone: string; wifi_name: string; wifi_password: string; whatsapp?: string; google_maps_url?: string; theme?: string };
+type Restaurant = { id: string; name: string; description: string; address: string; phone: string; wifi_name: string; wifi_password: string; whatsapp?: string; google_maps_url?: string; theme?: string; logo_url?: string };
 
 const THEMES = {
   dark:    { name: "داكن",   icon: "🌙", accent: "#f97316", bg: "#09090f",  heroBg: "linear-gradient(160deg,#0f0f1c 0%,#1c1005 100%)", accentBorder: "rgba(249,115,22,0.22)" },
@@ -78,6 +78,9 @@ function DashboardContent() {
   const [restName, setRestName] = useState(""); const [restDesc, setRestDesc] = useState(""); const [restPhone, setRestPhone] = useState(""); const [restAddress, setRestAddress] = useState(""); const [wifiName, setWifiName] = useState(""); const [wifiPass, setWifiPass] = useState("");
   const [restWhatsapp, setRestWhatsapp] = useState("");
   const [restGoogleMaps, setRestGoogleMaps] = useState("");
+  const [logoImage, setLogoImage] = useState<File | null>(null);
+  const [logoImagePreview, setLogoImagePreview] = useState("");
+  const logoImageInput = useRef<HTMLInputElement>(null);
   const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("dark");
   const [qrDataUrl, setQrDataUrl] = useState("");
   const [menuUrl, setMenuUrl] = useState("");
@@ -113,6 +116,7 @@ function DashboardContent() {
         setWifiPass(restData.wifi_password || "");
         setRestWhatsapp(restData.whatsapp || "");
         setRestGoogleMaps(restData.google_maps_url || "");
+        setLogoImagePreview(restData.logo_url || "");
         if (restData.theme && THEMES[restData.theme as ThemeKey]) {
           setSelectedTheme(restData.theme as ThemeKey);
         }
@@ -291,9 +295,23 @@ function DashboardContent() {
     } catch { showToast("❌ خطأ"); }
   };
 
+  const handleLogoImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setLogoImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setLogoImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const saveRestInfo = async () => {
     if (!restaurant) return;
     try {
+      let logoUrl = restaurant.logo_url || "";
+      if (logoImage) {
+        logoUrl = await uploadImage(logoImage, 'logos');
+      }
       await dashboardApi('updateRestaurant', {
         id: restaurant.id,
         payload: {
@@ -306,6 +324,7 @@ function DashboardContent() {
           whatsapp: restWhatsapp,
           google_maps_url: restGoogleMaps,
           theme: selectedTheme,
+          logo_url: logoUrl,
         }
       });
       showToast("💾 تم الحفظ!");
@@ -439,6 +458,28 @@ function DashboardContent() {
 
         {tab === "info" && (
           <div style={{ padding: "16px 16px 0" }}>
+            {/* لوغو المطعم */}
+            <div style={S.formGroup}>
+              <label style={S.formLabel}>لوغو المطعم</label>
+              <input ref={logoImageInput} type="file" accept="image/*" onChange={handleLogoImageChange} style={{ display: "none" }} />
+              <div style={S.uploadBox} onClick={() => logoImageInput.current?.click()}>
+                {logoImagePreview ? (
+                  <img src={logoImagePreview} alt="logo preview" style={{ height: 80, maxWidth: 200, objectFit: "contain", borderRadius: 10 }} />
+                ) : (
+                  <><span style={{ fontSize: 32 }}>🏷️</span><span style={{ fontSize: "0.8rem", color: "#4b5563" }}>اضغط لرفع لوغو المطعم</span></>
+                )}
+              </div>
+              {logoImagePreview && (
+                <button
+                  onClick={() => { setLogoImage(null); setLogoImagePreview(""); }}
+                  style={{ ...S.btnGhost, marginTop: 8, fontSize: "0.75rem", padding: "6px 12px" }}
+                >
+                  🗑 حذف اللوغو
+                </button>
+              )}
+              <div style={{ fontSize: "0.68rem", color: "#4b5563", marginTop: 4 }}>سيظهر هذا اللوغو في صفحة القائمة بدلاً من لوغو QRMENU</div>
+            </div>
+
             {/* حقول المعلومات الأساسية */}
             {[
               { l: "اسم المطعم", v: restName, s: setRestName, placeholder: "اسم مطعمك" },
